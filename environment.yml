@@ -1,0 +1,5 @@
+name: unirangen
+channels:
+  - conda-forge
+dependencies:
+  - jupyterlab
