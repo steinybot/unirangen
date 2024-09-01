@@ -1,7 +1,7 @@
 from typing import List
 
-import matplotlib.pyplot as plt
-import pandas as pd
+from matplotlib import pyplot
+import pandas
 from scipy.stats import chisquare
 
 
@@ -24,18 +24,18 @@ def perform_chi_square_test(all_results: List[List[int]], min_num: int, max_num:
 def plot_frequencies(observed_freq: List[int], expected_freq: List[float], min_num: int, max_num: int):
     numbers = list(range(min_num, max_num + 1))
 
-    plt.bar(numbers, observed_freq, color='blue', alpha=0.7, label='Observed')
-    plt.plot(numbers, expected_freq, color='red', marker='o', linestyle='dashed', linewidth=2, markersize=8,
+    pyplot.bar(numbers, observed_freq, color='blue', alpha=0.7, label='Observed')
+    pyplot.plot(numbers, expected_freq, color='red', marker='o', linestyle='dashed', linewidth=2, markersize=8,
              label='Expected')
 
-    plt.title('Observed vs Expected Frequencies of Random Numbers')
-    plt.xlabel('Number')
-    plt.ylabel('Frequency')
-    plt.legend()
-    plt.show()
+    pyplot.title('Observed vs Expected Frequencies of Random Numbers')
+    pyplot.xlabel('Number')
+    pyplot.ylabel('Frequency')
+    pyplot.legend()
+    pyplot.show()
 
 
-def calculate_probabilities(min_num: int, max_num: int, max_batch_size: int) -> pd.DataFrame:
+def calculate_probabilities(min_num: int, max_num: int, max_batch_size: int) -> pandas.DataFrame:
     data = []
     total_numbers = max_num - min_num + 1
 
@@ -44,16 +44,30 @@ def calculate_probabilities(min_num: int, max_num: int, max_batch_size: int) -> 
         numbers_greater_than_k = max_num - k
         for batch_size in range(1, max_batch_size + 1):
             if numbers_greater_than_k >= batch_size:
-                # Calculate the probability of not picking any number <= k in batch_size draws
+                # Calculate the probability of picking any number > k in batch_size draws
                 probability = 1.0
                 for i in range(batch_size):
                     probability *= (numbers_greater_than_k - i) / (total_numbers - i)
             else:
-                # If the batch size is larger than the numbers available, it's impossible to avoid all <= k
                 probability = 0.0
             row[f'Batch Size {batch_size}'] = probability
         data.append(row)
 
-    # Create a DataFrame
-    df = pd.DataFrame(data, index=[f'k = {k}' for k in range(min_num, max_num + 1)])
-    return df
+    return pandas.DataFrame(data, index=[f'k = {k}' for k in range(min_num, max_num + 1)])
+
+
+def execution_time(df: pandas.DataFrame):
+    # Plot the scatter plot
+    pyplot.figure(figsize=(10, 6))
+
+    # Loop through each range_size to plot its points
+    for range_size in df['range_size'].unique():
+        subset = df[df['range_size'] == range_size]
+        pyplot.plot(subset['batch_percentage'], subset['execution_time'], marker='o', label=f'Range Size: {range_size}')
+
+    pyplot.title('Execution Time vs. Batch Percentage')
+    pyplot.xlabel('Batch Percentage')
+    pyplot.ylabel('Execution Time (seconds)')
+    pyplot.legend(title='Range Size')
+    pyplot.grid(True)
+    pyplot.show()
