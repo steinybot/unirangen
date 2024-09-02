@@ -34,10 +34,10 @@ def ignore(run: Callable[[], Generator[int, None, None]]):
         pass
 
 
-def measure_time(generate: Callable[[int, int], Generator[int, None, None]]) -> pandas.DataFrame:
+def measure_time(generate: Callable[[int, int], Generator[int, None, None]], size_range: range = range(1000, 10001, 1000)) -> pandas.DataFrame:
     data = []
 
-    for range_size in range(1000, 10001, 1000):
+    for range_size in size_range:
         for batch_percentage_int in range(0, 101, 10):
             batch_percentage = batch_percentage_int / 100
             batch_size = range_size * batch_percentage
