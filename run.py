@@ -42,7 +42,7 @@ def measure_time(generate: Callable[[int, int], Generator[int, None, None]]) -> 
             batch_percentage = batch_percentage_int / 100
             batch_size = range_size * batch_percentage
 
-            execution_time = timeit.timeit(lambda: ignore(lambda: generate(range_size, int(batch_size))), number=3)
+            execution_time = timeit.timeit(lambda: ignore(lambda: generate(range_size, int(batch_size))), number=10)
 
             data.append({
                 'range_size': range_size,
