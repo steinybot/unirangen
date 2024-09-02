@@ -1,6 +1,6 @@
 # UniRanGen - Unique Random Generator
 
-An experimental generator for unique random numbers.
+Research into how to best generate randomly unique numbers.
 
 ## Setup
 
