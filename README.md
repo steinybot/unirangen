@@ -1,5 +1,7 @@
 # UniRanGen - Unique Random Generator
 
+An experimental generator for unique random numbers.
+
 ## Setup
 
 1. Install [miniforge].
